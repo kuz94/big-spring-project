@@ -1,4 +1,4 @@
-package kuzmin;
+package ru.kuzmin.spring.main;
 
 import org.springframework.boot.SpringApplication;
 
