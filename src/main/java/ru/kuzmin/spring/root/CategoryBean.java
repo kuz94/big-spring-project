@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.kuzmin.spring.dao.Category;
+import ru.kuzmin.spring.entities.Category;
 import ru.kuzmin.spring.root.logger.CommonLogger;
 
 /**

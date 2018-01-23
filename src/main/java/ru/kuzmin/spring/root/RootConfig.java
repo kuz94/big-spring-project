@@ -7,6 +7,7 @@ package ru.kuzmin.spring.root;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  *
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan("ru.kuzmin.spring.root")
+@ImportResource("classpath:spring_beans.xml")
 public class RootConfig {
 
 }

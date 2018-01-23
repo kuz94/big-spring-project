@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kuzmin.spring.dao.Task;
+import ru.kuzmin.spring.entities.Task;
 import ru.kuzmin.spring.root.TaskBean;
 import ru.kuzmin.spring.root.logger.CommonLogger;
 
@@ -37,8 +37,8 @@ public class TaskController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void createTask(Task newTask) {
+	public Task createTask(Task newTask) {
 		logger.logEvent("resource:task", "request:creating");
-		taskBean.create(newTask);
+		return taskBean.create(newTask);
 	}
 }
