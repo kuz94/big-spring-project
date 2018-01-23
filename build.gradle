@@ -3,7 +3,10 @@ plugins {
 	id 'java'
 }
 
-apply plugin:'java'
+jar {
+	baseName = 'notepad'
+	version = '1.00.0'
+}
 
 repositories {
 	jcenter()
