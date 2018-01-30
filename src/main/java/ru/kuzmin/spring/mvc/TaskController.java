@@ -5,14 +5,16 @@
  */
 package ru.kuzmin.spring.mvc;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kuzmin.spring.entities.Task;
 import ru.kuzmin.spring.root.TaskBean;
-import ru.kuzmin.spring.root.logger.CommonLogger;
+
+import java.util.List;
 
 /**
  *
@@ -21,24 +23,23 @@ import ru.kuzmin.spring.root.logger.CommonLogger;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
+	private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 	private final TaskBean taskBean;
-	private final CommonLogger logger;
 
 	@Autowired
-	public TaskController(TaskBean taskBean, CommonLogger logger) {
+	public TaskController(TaskBean taskBean) {
 		this.taskBean = taskBean;
-		this.logger = logger;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Task> getAllTasks() {
-		logger.logEvent("resource:task", "request:findall");
+		logger.info("resource:{}:request{}", "task", "findAll");
 		return taskBean.findAll();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Task createTask(Task newTask) {
-		logger.logEvent("resource:task", "request:creating");
+		logger.info("resource:{}:request{}", "task", "create");
 		return taskBean.create(newTask);
 	}
 }
