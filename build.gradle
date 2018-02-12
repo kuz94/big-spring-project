@@ -1,10 +1,19 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '1.5.9.RELEASE'
 	id 'java'
 }
 
 repositories {
-	jcenter()
+	mavenCentral()
 }
 
 dependencies {
@@ -15,4 +24,7 @@ dependencies {
 	compile("ch.qos.logback:logback-classic:1.2.3")
 	compile("ch.qos.logback:logback-core:1.2.3")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
+	testCompile("org.junit.jupiter:junit-jupiter-api:5.0.3")
+	testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.3")
+	testCompile("org.mockito:mockito-core:2.15.0")
 }
