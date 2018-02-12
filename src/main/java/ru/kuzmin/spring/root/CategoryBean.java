@@ -7,10 +7,11 @@ package ru.kuzmin.spring.root;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.kuzmin.spring.entities.Category;
-import ru.kuzmin.spring.root.logger.CommonLogger;
 
 /**
  *
@@ -18,22 +19,17 @@ import ru.kuzmin.spring.root.logger.CommonLogger;
  */
 @Component
 public class CategoryBean {
-	private CommonLogger logger;
-
-	@Autowired
-	public void setLogger(CommonLogger logger) {
-		this.logger = logger;
-	}
+	private static final Logger logger = LoggerFactory.getLogger(CategoryBean.class);
 
 	public List<Category> findAll() {
-		logger.logEvent("bean:category", "findAll");
+		logger.info("bean:{}:method:{}", "category", "findAll");
 		List<Category> categories = new ArrayList<>();
 		categories.add(new Category("category"));
 		return categories;
 	}
 
 	public Category create(Category newCategory) {
-		logger.logEvent("bean:category", "creating:" + newCategory.getName());
+		logger.info("bean:{}:method:{}", "category", "create");
 		return newCategory;
 	}
 }

@@ -5,14 +5,16 @@
  */
 package ru.kuzmin.spring.mvc;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kuzmin.spring.entities.Category;
 import ru.kuzmin.spring.root.CategoryBean;
-import ru.kuzmin.spring.root.logger.CommonLogger;
+
+import java.util.List;
 
 /**
  *
@@ -21,25 +23,23 @@ import ru.kuzmin.spring.root.logger.CommonLogger;
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
-
+	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 	private final CategoryBean categoryBean;
-	private final CommonLogger logger;
 
 	@Autowired
-	public CategoryController(CategoryBean categoryBean, CommonLogger logger) {
+	public CategoryController(CategoryBean categoryBean) {
 		this.categoryBean = categoryBean;
-		this.logger = logger;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Category> getAllCategories() {
-		logger.logEvent("resource:category", "request:findall");
+		logger.info("resource:{}:request:{}", "category", "findAll");
 		return categoryBean.findAll();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public void createCategory(Category newCategory) {
-		logger.logEvent("resource:category", "request:creating");
+		logger.info("resource:{}:request:{}", "category", "create");
 		categoryBean.create(newCategory);
 	}
 }
