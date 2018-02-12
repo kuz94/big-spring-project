@@ -1,5 +1,6 @@
 package ru.kuzmin.spring.dao;
 
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import ru.kuzmin.spring.entities.Task;
 import java.util.List;
 

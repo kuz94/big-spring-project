@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -26,35 +27,35 @@ import ru.kuzmin.spring.entities.Task;
  * @author Антон
  */
 @Repository
-public class JdbcTaskDao implements TaskDao {
+public class JdbcTaskDao extends JdbcDaoSupport implements TaskDao {
 
 	private final RowMapper<Task> taskMapper = (rs, index) -> {
 		return new Task(rs.getLong("id"),
 				  null,
 				  rs.getString("description"));
 	};
-	private final JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	public JdbcTaskDao(DataSource dataSource) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
+		setDataSource(dataSource);
+		checkDaoConfig();
 	}
 
 	@Override
 	public List<Task> findAll() {
-		return jdbcTemplate.query("select * from task", taskMapper);
+		return getJdbcTemplate().query("select * from task", taskMapper);
 	}
 
 	@Override
 	public Task find(Long id) {
-		return jdbcTemplate.queryForObject("select * from task where id = ?",
+		return getJdbcTemplate().queryForObject("select * from task where id = ?",
 				  new Long[]{id}, taskMapper);
 	}
 
 	@Override
 	public Task create(Task task) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbcTemplate.update(new PreparedStatementCreator() {
+		getJdbcTemplate().update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement("insert into task(description) values(?)", new String[]{"id"});

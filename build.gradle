@@ -1,15 +1,61 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'javax.xml.bind:jaxb-api:2.1'
+		classpath 'com.sun.xml.bind:jaxb-impl:2.2.11'
+		classpath 'com.sun.xml.bind:jaxb-core:2.2.11'
+		classpath 'org.jooq:jooq-codegen:3.10.4'
+		classpath 'mysql:mysql-connector-java:6.0.6'
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '1.5.9.RELEASE'
 	id 'java'
 }
 
 repositories {
-	jcenter()
+	mavenLocal()
+	mavenCentral()
 }
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
-        compile("org.springframework.boot:spring-boot-starter-jdbc")
-        compile("mysql:mysql-connector-java:6.0.6")
+	compile("org.springframework.boot:spring-boot-starter-jdbc")
+	runtime("mysql:mysql-connector-java:6.0.6")
+	compile("org.jooq:jooq:3.10.4")
+	compile("org.jooq:jooq-meta:3.10.4")
+	compile("org.jooq:jooq-codegen:3.10.4")
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
+
+def writer = new StringWriter()
+def xml = new groovy.xml.MarkupBuilder(writer)
+		.configuration('xmlns': 'http://www.jooq.org/xsd/jooq-codegen-3.10.0.xsd') {
+	jdbc() {
+		driver('com.mysql.jdbc.Driver')
+		url('jdbc:mysql://localhost:3306/notepad?serverTimezone=UTC')
+		user('root')
+		password('root')
+	}
+	generator() {
+		database() {
+		}
+		generate([:]) {
+			pojos true
+			daos true
+		}
+		target() {
+			packageName('ru.kuzmin.spring.entities.jooq')
+			directory('src/main/java')
+		}
+	}
+}
+
+org.jooq.util.GenerationTool.generate(
+		javax.xml.bind.JAXB.unmarshal(new StringReader(writer.toString()), org.jooq.util.jaxb.Configuration.class)
+)
